@@ -3,3 +3,8 @@
 2 - Alors , j'ai effacer le fichier frontend , pour repartir à 0 au niveau du front mais cette fois_ci avec bootstrap pour assurer le design. Peut tu me redonner les commandes stp . (on garde toujours le style atomic design + architecture angular).
 
 3 - À partir de maintenant , on va faire les fonctions métiers correspondant à chaque tableau du bilan , mon idée c'est de faire la fonction dans le service ou repository en question (cela dépend du cas). Et dans le service de Bilanlot , on appel juste la fonction , et c'est ce service qui va être appelé au front. Dis moi si c'est une bonne idée. 
+
+4 - Nombre de poulets : Une fonction dans AkohoMatyRepository qui regarde si la date de deces est inférieur à la date donnée. Si oui , il doit faire retourner la difference entre le nombre de poulet initiale et le nombre de akohoMaty. Si non , il retourne le nombre de poulet initiale. 
+Puis , on appelle cette fonction dans BilanLotService.
+
+5 - 

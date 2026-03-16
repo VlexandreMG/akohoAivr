@@ -94,8 +94,5 @@ CREATE TABLE prix_achat (
 );
 GO
 
-INSERT INTO prix_sakafo (nom, prix, daty)
-VALUES 
-('starter', 2500, '2026-03-01'),
-('grower', 2300, '2026-03-01'),
-('finisher', 2200, '2026-03-01');
+ALTER TABLE lot ADD prix_achat DECIMAL(10,2);
+GO 
