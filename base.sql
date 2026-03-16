@@ -7,7 +7,11 @@ GO
 
 CREATE TABLE race (
     id INT IDENTITY(1, 1) PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL
+    nom VARCHAR(100) NOT NULL,
+    percentMale DECIMAL(5, 2) NOT NULL,
+    percentFemale DECIMAL(5, 2) NOT NULL,
+    capPondaison INT NOT NULL,
+    percentLamokana DECIMAL(5, 2) NOT NULL
 );
 GO
 
