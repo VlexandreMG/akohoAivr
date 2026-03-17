@@ -107,6 +107,26 @@ class AkohoMatyRepository {
 
         return vivants;
     }
+
+    /**
+     * Retourne le nombre TOTAL de poulets morts (akoho maty) 
+     * survenus jusqu'à la date donnée (inclus) pour un lot donné.
+     * 
+     * @param {number} lotId 
+     * @param {string} date format 'YYYY-MM-DD'
+     * @returns {Promise<number>} nombre cumulé de morts
+     */
+    async getNombrePouletsMortsCumules(lotId, date) {
+        const result = await db.executeQuery(
+            `SELECT ISNULL(SUM(nombre), 0) AS total_morts
+             FROM akohoMaty
+             WHERE id_lot = @lotId
+               AND date <= @date`,
+            { lotId, date }
+        );
+
+        return result.recordset[0].total_morts;
+    }
 }
 
 module.exports = new AkohoMatyRepository();

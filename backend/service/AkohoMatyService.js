@@ -15,6 +15,7 @@ class AkohoMatyService {
     // @param {number} lotId
     // @param {string} date
     async getNombrePouletsVivants(lotId, date) { return await AkohoMatyRepository.getNombrePouletsVivants(lotId, date); }
+    async getNombrePouletsMortsCumules(lotId, date) { return await AkohoMatyRepository.getNombrePouletsMortsCumules(lotId, date); }
 }
 
 module.exports = new AkohoMatyService();
