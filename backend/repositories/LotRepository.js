@@ -1,100 +1,112 @@
 const db = require('../database/db');
 
 class LotRepository {
-    async create({ nom, nombre, daty, id_race }) {
+    // CREATE
+    async create({ nom, nombre, daty, origine, id_race, semaine_initial, prix_achat }) {
         const result = await db.executeQuery(
-            `INSERT INTO lot (nom, nombre, daty, id_race)
+            `INSERT INTO lot (nom, nombre, daty, origine, id_race, semaine_initial, prix_achat)
              OUTPUT INSERTED.*
-             VALUES (@nom, @nombre, @daty, @id_race)`,
-            { nom, nombre, daty, id_race }
+             VALUES (@nom, @nombre, @daty, @origine, @id_race, @semaine_initial, @prix_achat)`,
+            { nom, nombre, daty, origine, id_race, semaine_initial, prix_achat }
         );
         return result.recordset[0];
     }
 
+    // READ ALL
     async findAll() {
         const result = await db.executeQuery(
-            `SELECT l.id,
-                    l.nom,
-                    l.nombre,
-                    l.daty,
-                    l.id_race,
-                    r.nom AS race_nom,
-                    r.description AS race_description,
-                    r.created_at AS race_created_at
+            `SELECT l.*,
+                    r.nom AS race_nom
              FROM lot l
-             INNER JOIN race r ON l.id_race = r.id`
+             LEFT JOIN race r ON l.id_race = r.id
+             ORDER BY l.daty DESC`
         );
         return result.recordset;
     }
 
+    // READ ONE
     async findById(id) {
         const result = await db.executeQuery(
-            `SELECT l.id,
-                    l.nom,
-                    l.nombre,
-                    l.daty,
-                    l.id_race,
-                    r.nom AS race_nom,
-                    r.description AS race_description,
-                    r.created_at AS race_created_at
+            `SELECT l.*,
+                    r.nom AS race_nom
              FROM lot l
-             INNER JOIN race r ON l.id_race = r.id
+             LEFT JOIN race r ON l.id_race = r.id
              WHERE l.id = @id`,
             { id }
         );
-        return result.recordset[0];
+        return result.recordset[0] || null;
     }
 
-    async update({ id, nom, nombre, daty, id_race }) {
-        // Accept either a plain object or a model instance with getters
-        const get = (obj, prop, getter) => (obj && (obj[prop] !== undefined ? obj[prop] : (typeof obj[getter] === 'function' ? obj[getter]() : undefined)));
-        const _id = get(arguments[0], 'id', 'getId');
-        const _nom = get(arguments[0], 'nom', 'getNom');
-        const _nombre = get(arguments[0], 'nombre', 'getNombre');
-        const _daty = get(arguments[0], 'daty', 'getDaty');
-        const _id_race = get(arguments[0], 'id_race', 'getIdRace');
+    // UPDATE
+    async update(lot) {
+        // Accepte objet plain ou instance de Lot
+        const get = (obj, prop, getter) => 
+            (obj && (obj[prop] !== undefined ? obj[prop] : (typeof obj[getter] === 'function' ? obj[getter]() : undefined)));
+
+        const _id              = get(lot, 'id',              'getId');
+        const _nom             = get(lot, 'nom',             'getNom');
+        const _nombre          = get(lot, 'nombre',          'getNombre');
+        const _daty            = get(lot, 'daty',            'getDaty');
+        const _origine         = get(lot, 'origine',         'getOrigine');
+        const _id_race         = get(lot, 'id_race',         'getIdRace');
+        const _semaine_initial = get(lot, 'semaine_initial', 'getSemaineInitial');
+        const _prix_achat      = get(lot, 'prix_achat',      'getPrixAchat');
 
         const result = await db.executeQuery(
             `UPDATE lot
-             SET nom = @nom,
-                 nombre = @nombre,
-                 daty = @daty,
-                 id_race = @id_race
+             SET nom             = @nom,
+                 nombre          = @nombre,
+                 daty            = @daty,
+                 origine         = @origine,
+                 id_race         = @id_race,
+                 semaine_initial = @semaine_initial,
+                 prix_achat      = @prix_achat
              OUTPUT INSERTED.*
              WHERE id = @id`,
-            { id: _id, nom: _nom, nombre: _nombre, daty: _daty, id_race: _id_race }
+            { 
+                id: _id,
+                nom: _nom,
+                nombre: _nombre,
+                daty: _daty,
+                origine: _origine,
+                id_race: _id_race,
+                semaine_initial: _semaine_initial,
+                prix_achat: _prix_achat 
+            }
         );
-        return result.recordset[0];
+
+        return result.recordset[0] || null;
     }
 
+    // DELETE
     async delete(id) {
-        return await db.executeQuery('DELETE FROM lot WHERE id = @id', { id });
+        const result = await db.executeQuery(
+            'DELETE FROM lot WHERE id = @id',
+            { id }
+        );
+        return result.rowsAffected[0] > 0;
     }
 
-    async findByRaceId(id) {
+    // Méthode bonus : lots par race
+    async findByRaceId(raceId) {
         const result = await db.executeQuery(
-            `SELECT l.id,
-                    l.nom,
-                    l.nombre,
-                    l.daty,
-                    l.id_race,
-                    r.nom AS race_nom,
-                    r.description AS race_description,
-                    r.created_at AS race_created_at
-             FROM lot l
-             INNER JOIN race r ON l.id_race = r.id
-             WHERE l.id_race = @id`,
-            { id }
+            `SELECT * FROM lot 
+             WHERE id_race = @raceId 
+             ORDER BY daty DESC`,
+            { raceId }
         );
         return result.recordset;
     }
 
-    async findLotById(id) {
+    // Méthode bonus : lots actifs (non terminés) à une date donnée
+    async findActiveLotsAtDate(date) {
         const result = await db.executeQuery(
-            `SELECT * FROM lot WHERE id = @id`,
-            { id }
+            `SELECT * FROM lot 
+             WHERE daty <= @date 
+             ORDER BY daty DESC`,
+            { date }
         );
-        return result.recordset[0] || null;
+        return result.recordset;
     }
 }
 
