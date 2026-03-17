@@ -1,5 +1,6 @@
 // services/BilanLotService.js
 const AkohoMatyService = require('./AkohoMatyService');
+const LotRepository = require('../repositories/LotRepository');
 // Ajouter les autres services au fur et à mesure
 
 class BilanLotService {
@@ -8,6 +9,17 @@ class BilanLotService {
      * @param {number} lotId 
      * @param {string} date 
      */
+
+    async getPrixAchat(lotId) {
+        const lot = await LotRepository.findById(lotId);
+        if (!lot) {
+            throw new Error(`Lot ${lotId} non trouvé`);
+        }
+
+        // On retourne le champ tel quel (il est déjà le total pour le lot)
+        return lot.prix_achat || 0;
+    }
+
     async getNombrePouletsVivants(lotId, date) {
         return await AkohoMatyService.getNombrePouletsVivants(lotId, date);
     }

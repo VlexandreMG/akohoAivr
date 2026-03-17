@@ -11,6 +11,7 @@ router.get('/bilan/lot/:lotId', async (req, res) => {
             date: date || new Date().toISOString().split('T')[0],
             nombrePouletsVivants: await BilanLotService.getNombrePouletsVivants(lotId, date),
             nombreMorts: await BilanLotService.getNombrePouletsMorts(lotId, date),
+            prixAchat: await BilanLotService.getPrixAchat(lotId),
             poidsMoyen: await BilanLotService.getPoidsMoyenEstime(lotId, date),
             coutSakafo: await BilanLotService.getCoutSakafoEstime(lotId, date),
             valeurVentePoulets: await BilanLotService.getPrixDeVente(lotId, date),
