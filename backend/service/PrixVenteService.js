@@ -10,6 +10,43 @@ class PrixVenteService {
         return await PrixVenteRepository.update(payload);
     }
     async delete(id) { return await PrixVenteRepository.delete(id); }
+
+    /**
+     * Calcule la valeur totale estimée à la vente du lot à une date donnée
+     * = poids moyen estimé (kg ou g) × nombre de poulets vivants × prix_akoho_g
+     *
+     * @param {number} lotId
+     * @param {string} date format 'YYYY-MM-DD'
+     * @returns {Promise<number>} Valeur totale en Ariary
+     */
+    async getValeurVenteEstimee(lotId, date) {
+        // 1. Récupérer le prix_akoho_g pour la race du lot
+        const lot = await LotRepository.findById(lotId);
+        if (!lot) throw new Error(`Lot ${lotId} non trouvé`);
+
+        const prixVente = await PrixVenteRepository.findByRaceId(lot.id_race);
+        if (!prixVente || !prixVente.prix_akoho_g) {
+            return 0; // Pas de prix connu → valeur nulle
+        }
+
+        const prixParKg = prixVente.prix_akoho_g;   // ← ou prix par gramme, à confirmer
+
+        // 2. Poids moyen estimé (en kg)
+        const poidsMoyenGr = await EquivalenceService.getPoidsMoyenEstime(lotId, date);
+        if (poidsMoyenGr <= 0) return 0;
+
+        const poidsMoyenKg = poidsMoyenGr / 1000;   // Si ton prix est par kg
+        // Si prix_akoho_g est par gramme → commente la ligne ci-dessus et utilise :
+        // const poidsMoyenKg = poidsMoyenGr;
+
+        // 3. Nombre de poulets vivants
+        const nbPouletsVivants = await AkohoMatyService.getNombrePouletsVivants(lotId, date);
+
+        // 4. Calcul final
+        const valeurTotale = nbPouletsVivants * poidsMoyenKg * prixParKg;
+
+        return Math.round(valeurTotale);
+    }
 }
 
 module.exports = new PrixVenteService();
