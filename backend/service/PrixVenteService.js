@@ -47,6 +47,32 @@ class PrixVenteService {
 
         return Math.round(valeurTotale);
     }
+
+    async getValeurAtodyEstimee(lotId, date) {
+        // 1. Récupérer le nombre d'atody effectifs à cette date (pour tout le lot)
+        const nombreAtody = await EtatAtodyService.getNombreAtodyEffectifsPourLot(lotId, date);
+        if (nombreAtody <= 0) {
+            return 0;
+        }
+
+        // 2. Récupérer le prix unitaire de l'œuf pour la race du lot
+        const lot = await LotRepository.findById(lotId);
+        if (!lot) {
+            throw new Error(`Lot ${lotId} non trouvé`);
+        }
+
+        const prixVente = await PrixVenteRepository.findByRaceId(lot.id_race);
+        if (!prixVente || !prixVente.prix_atody_unitaire) {
+            return 0; // Pas de prix connu → valeur nulle
+        }
+
+        const prixUnitaireOeuf = prixVente.prix_atody_unitaire;
+
+        // 3. Calcul final
+        const valeurTotale = nombreAtody * prixUnitaireOeuf;
+
+        return Math.round(valeurTotale);
+    }
 }
 
 module.exports = new PrixVenteService();
