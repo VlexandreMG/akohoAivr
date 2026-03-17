@@ -72,17 +72,41 @@ class AkohoMatyRepository {
         return await db.executeQuery('DELETE FROM akohoMaty WHERE id = @id', { id });
     }
 
-    async getTotalMatyByLotAndDate(lotId, date) {
-        const result = await db.executeQuery(
+    /**
+     * Calcule le nombre de poulets encore vivants à une date donnée pour un lot
+     * @param {number} lotId 
+     * @param {string} date  // format 'YYYY-MM-DD'
+     * @returns {Promise<number>} nombre de poulets vivants à cette date
+     */
+    async getNombrePouletsVivants(lotId, date) {
+        // 1. Récupérer le nombre initial du lot
+        const lotResult = await db.executeQuery(
+            `SELECT nombre FROM lot WHERE id = @lotId`,
+            { lotId }
+        );
+
+        if (lotResult.recordset.length === 0) {
+            throw new Error(`Lot ${lotId} non trouvé`);
+        }
+
+        const nombreInitial = lotResult.recordset[0].nombre;
+
+        // 2. Somme des morts jusqu'à la date donnée (date <= date paramètre)
+        const mortsResult = await db.executeQuery(
             `SELECT ISNULL(SUM(nombre), 0) AS total_maty
              FROM akohoMaty
-             WHERE id_lot = @lotId AND date <= @date`,
+             WHERE id_lot = @lotId
+               AND date <= @date`,
             { lotId, date }
         );
-        return result.recordset[0].total_maty;
-    }
 
-    async 
+        const totalMorts = mortsResult.recordset[0].total_maty;
+
+        // 3. Nombre vivant = initial - morts cumulés
+        const vivants = Math.max(0, nombreInitial - totalMorts); // pas de négatif
+
+        return vivants;
+    }
 }
 
 module.exports = new AkohoMatyRepository();
