@@ -6,7 +6,7 @@
 
 4 - Nombre de poulets : Une fonction dans AkohoMatyRepository qui regarde si la date de deces est inférieur à la date donnée. Si oui , il doit faire retourner la difference entre le nombre de poulet initiale et le nombre de akohoMaty. Si non , il retourne le nombre de poulet initiale. 
 Puis , on appelle cette fonction dans BilanLotService.
-
+ 
 5 - Prix Achat : Directement dans la base.
 
 6 - Nombre de poulets morts : Une fonction dans AkohoMatyRepository qui fait le get le nombre de akoho maty si la date est inférieur à la date donnée. Après on appelle cette fonction dans BilanLotService.
