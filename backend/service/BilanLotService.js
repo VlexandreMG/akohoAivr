@@ -16,6 +16,10 @@ class BilanLotService {
         return await AkohoMatyService.getNombrePouletsMortsCumules(lotId, date);
     }
 
+    async getPoidsMoyenEstime(lotId, date) {
+        return await EquivalenceService.getPoidsMoyenEstime(lotId, date);
+    }
+
     // Plus tard, quand on aura plusieurs métriques, on pourra faire :
     // async getBilanEssentiel(lotId, date) {
     //   const vivants = await AkohoMatyService.getNombrePouletsVivants(lotId, date);
