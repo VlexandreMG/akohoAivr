@@ -1,6 +1,5 @@
 const LotRepository = require('../repositories/LotRepository');
 const Lot = require('../models/Lot');
-const { normalizeDate, formatDate, validateWeekAndDay, calculateWeekAndDay, calculateDateFromWeekAndDay } = require('../service/utilitaire');
 const AkohoMatyService = require('./AkohoMatyService');
 
 class LotService {
