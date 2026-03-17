@@ -41,6 +41,39 @@ class BilanLotService {
         return await PrixVenteService.getValeurAtodyEstimee(lotId, date);
     }
 
+    async getBeneficeNet(lotId, date) {
+        // 1. Prix de vente (valeur des poulets vivants)
+        const prixVente = await PrixVenteService.getValeurVenteEstimee(lotId, date);
+
+        // 2. Valeur atody (valeur des œufs)
+        const valeurAtody = await PrixVenteService.getValeurAtodyEstimee(lotId, date);
+
+        // 3. Prix d'achat total du lot
+        const lot = await LotRepository.findById(lotId);
+        if (!lot) {
+            throw new Error(`Lot ${lotId} non trouvé`);
+        }
+
+        // Attention : prix_achat est-il par poulet ou total pour le lot ?
+        // On suppose ici que c'est le prix TOTAL pour le lot entier
+        const prixAchatTotal = lot.prix_achat || 0;
+
+        // Variante si prix_achat est par poulet → décommente et adapte :
+        // const prixAchatTotal = lot.prix_achat * lot.nombre;
+
+        // 4. Coût sakafo estimé
+        const coutSakafo = await EquivalenceService.getCoutSakafoEstime(lotId, date);
+
+        // 5. Calcul final du bénéfice
+        const revenus = prixVente + valeurAtody;
+        const couts = prixAchatTotal + coutSakafo;
+
+        const beneficeNet = revenus - couts;
+
+        return Math.round(beneficeNet);
+    }
+
+
     // Plus tard, quand on aura plusieurs métriques, on pourra faire :
     // async getBilanEssentiel(lotId, date) {
     //   const vivants = await AkohoMatyService.getNombrePouletsVivants(lotId, date);
