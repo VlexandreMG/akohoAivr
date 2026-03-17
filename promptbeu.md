@@ -18,7 +18,7 @@ Puis , on appelle cette fonction dans BilanLotService.
 
 9 - Prix de vente : Le poids moyen multiplié par le nombre de poulets dans le tableau multiplié par prix_akoho_g.
 
-10 - Nombre atody : En utilisant EtatAtody , par exemple nous avons, 12 comme nombre , 01/03/26 comme date de recensement , le date d'eclosion de ces oeufs se fera AUTOMATIQUEMENT +30j + 1j après la date de recensement , après les 31 j , on aura un nouveau lot avec comme date , le date+31 et comme nombre = le nombre de EtatAtody - (nombre de EtatAtody * percentLamokana (depend de la race)). Et si la date donnée est entre le date de recensement et le date+31j , alors , on retourne le nombre atody dans EtatAtody.
+10 - Nombre atody : En utilisant EtatAtody , par exemple nous avons, 12 comme nombre , 01/03/26 comme date de recensement , le date d'eclosion de ces oeufs se fera AUTOMATIQUEMENT +30j + 1j (parce qu'on commence à compter un jour après la date d'eclosion) après la date de recensement , après les 31 j , on aura un nouveau lot avec comme date , le date+31 et comme nombre = le nombre de EtatAtody - (nombre de EtatAtody * percentLamokana (depend de la race)). Et si la date donnée est entre le date de recensement et le date+31j , alors , on retourne le nombre atody dans EtatAtody.
 
 11 - Valeur de atody  : Le nombre atody * prix_atody unitaire dans prix_vente.
 

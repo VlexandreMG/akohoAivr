@@ -28,6 +28,15 @@ class BilanLotService {
         return await PrixVenteService.getValeurVenteEstimee(lotId, date);
     }
 
+    async getNombreAtodyEffectifs(lotId, date) {
+        return await EtatAtodyService.getNombreAtodyEffectifsPourLot(lotId, date);
+    }
+
+    // Si tu veux pour un seul EtatAtody (moins courant)
+    async getNombreAtodyPourEtat(etatId, date) {
+        return await EtatAtodyService.getNombreAtodyEffectifs(etatId, date);
+    }
+
     // Plus tard, quand on aura plusieurs métriques, on pourra faire :
     // async getBilanEssentiel(lotId, date) {
     //   const vivants = await AkohoMatyService.getNombrePouletsVivants(lotId, date);
