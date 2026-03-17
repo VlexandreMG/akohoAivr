@@ -10,7 +10,7 @@ router.get('/bilan/lot/:lotId', async (req, res) => {
         const bilan = {
             date: date || new Date().toISOString().split('T')[0],
             nombrePouletsVivants: await BilanLotService.getNombrePouletsVivants(lotId, date),
-            nombreMorts: await BilanLotService.getNombrePouletsMorts(lotId, date),
+            nombreMorts: await BilanLotService.getNombrePouletsMortsCumules(lotId, date),
             prixAchat: await BilanLotService.getPrixAchat(lotId),
             poidsMoyen: await BilanLotService.getPoidsMoyenEstime(lotId, date),
             coutSakafo: await BilanLotService.getCoutSakafoEstime(lotId, date),
@@ -27,3 +27,5 @@ router.get('/bilan/lot/:lotId', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+module.exports = router;

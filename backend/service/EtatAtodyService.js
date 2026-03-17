@@ -1,5 +1,8 @@
 const EtatAtodyRepository = require('../repositories/EtatAtodyRepository');
 const EtatAtody = require('../models/EtatAtody');
+const LotRepository = require('../repositories/LotRepository');
+const AtodyRepository = require('../repositories/AtodyRepository');
+const RaceService = require('./RaceService');
 
 class EtatAtodyService {
     async create(data) { return await EtatAtodyRepository.create(data); }

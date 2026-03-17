@@ -13,14 +13,13 @@ class PrixVenteRepository {
 
     async findAll() {
         const result = await db.executeQuery(
-            `SELECT pv.id,
+                `SELECT pv.id,
                     pv.id_race,
                     pv.prix_akoho_g,
                     pv.prix_atody_unitaire,
-                    r.nom AS race_nom,
-                    r.description AS race_description
-             FROM prix_vente pv
-             INNER JOIN race r ON pv.id_race = r.id`
+                    r.nom AS race_nom
+                 FROM prix_vente pv
+                 INNER JOIN race r ON pv.id_race = r.id`
         );
         return result.recordset;
     }
@@ -31,12 +30,26 @@ class PrixVenteRepository {
                     pv.id_race,
                     pv.prix_akoho_g,
                     pv.prix_atody_unitaire,
-                    r.nom AS race_nom,
-                    r.description AS race_description
+                    r.nom AS race_nom
              FROM prix_vente pv
              INNER JOIN race r ON pv.id_race = r.id
              WHERE pv.id = @id`,
             { id }
+        );
+        return result.recordset[0];
+    }
+
+    async findByRaceId(id_race) {
+        const result = await db.executeQuery(
+            `SELECT pv.id,
+                    pv.id_race,
+                    pv.prix_akoho_g,
+                    pv.prix_atody_unitaire,
+                    r.nom AS race_nom
+             FROM prix_vente pv
+             INNER JOIN race r ON pv.id_race = r.id
+             WHERE pv.id_race = @id_race`,
+            { id_race }
         );
         return result.recordset[0];
     }

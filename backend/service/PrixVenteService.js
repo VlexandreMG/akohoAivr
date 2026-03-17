@@ -1,5 +1,9 @@
 const PrixVenteRepository = require('../repositories/PrixVenteRepository');
 const PrixVente = require('../models/PrixVente');
+const LotRepository = require('../repositories/LotRepository');
+const EquivalenceService = require('./EquivalenceService');
+const AkohoMatyService = require('./AkohoMatyService');
+const EtatAtodyService = require('./EtatAtodyService');
 
 class PrixVenteService {
     async create(data) { return await PrixVenteRepository.create(data); }

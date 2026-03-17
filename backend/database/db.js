@@ -5,7 +5,7 @@ const config = {
     server: '127.0.0.1',
     database: 'akoho',
     user: 'akoho',           // Login SQL
-    password: 'Tana2026?Mada',   // Mot de passe
+    password: '@koho?2026',   // Mot de passe
     options: {
         encrypt: false,
         trustServerCertificate: true,

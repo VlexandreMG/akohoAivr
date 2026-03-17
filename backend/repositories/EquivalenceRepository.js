@@ -6,38 +6,38 @@ class EquivalenceRepository {
             `INSERT INTO equivalence (numero_semaine, id_race, poids, sakafo, prix_sakafo)
              OUTPUT INSERTED.*
              VALUES (@numero_semaine, @id_race, @poids, @sakafo, @prix_sakafo)`,
-            { numero_semaine, id_race, poids, sakafo, prixSakafo }
+            { numero_semaine, id_race, poids, sakafo, prix_sakafo: prixSakafo }
         );
         return result.recordset[0];
     }
 
     async findAll() {
         const result = await db.executeQuery(
-            `SELECT e.id,
+                `SELECT e.id,
                     e.numero_semaine,
                     e.id_race,
                     e.poids,
                     e.sakafo,
                     e.prix_sakafo,
-                    r.nom AS race_nom,
-             FROM equivalence e
-             INNER JOIN race r ON e.id_race = r.id`
+                    r.nom AS race_nom
+                 FROM equivalence e
+                 INNER JOIN race r ON e.id_race = r.id`
         );
         return result.recordset;
     }
 
     async findById(id) {
         const result = await db.executeQuery(
-            `SELECT e.id,
+                `SELECT e.id,
                     e.numero_semaine,
                     e.id_race,
                     e.poids,
                     e.sakafo,
                     e.prix_sakafo,
-                    r.nom AS race_nom,
-             FROM equivalence e
-             INNER JOIN race r ON e.id_race = r.id
-             WHERE e.id = @id`,
+                    r.nom AS race_nom
+                 FROM equivalence e
+                 INNER JOIN race r ON e.id_race = r.id
+                 WHERE e.id = @id`,
             { id }
         );
         return result.recordset[0];

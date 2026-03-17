@@ -1,6 +1,7 @@
 const express = require('express');
-const app = express();
+const app = express(); // Utilise bien 'app' ici
 
+// Import des routes
 const lotRoutes = require('./routes/lotRoutes');
 const raceRoutes = require('./routes/raceRoutes');
 const equivalenceRoutes = require('./routes/equivalenceRoutes');
@@ -9,10 +10,11 @@ const atodyRoutes = require('./routes/atodyRoutes');
 const etatAtodyRoutes = require('./routes/etatAtodyRoutes');
 const prixVenteRoutes = require('./routes/prixVenteRoutes');
 const prixAchatRoutes = require('./routes/prixAchatRoutes');
-const bilanRoute = require('./routes/bilanRoutes'); // Importer les routes du bilan
+const bilanRoute = require('./routes/bilanRoutes');
 
 app.use(express.json());
 
+// Montage des routes sur le préfixe /api
 app.use('/api', lotRoutes);
 app.use('/api', raceRoutes);
 app.use('/api', equivalenceRoutes);
@@ -21,7 +23,8 @@ app.use('/api', atodyRoutes);
 app.use('/api', etatAtodyRoutes);
 app.use('/api', prixVenteRoutes);
 app.use('/api', prixAchatRoutes);
-app.use('/api', bilanRoute); // Utiliser les routes du bilan
+app.use('/api', bilanRoute);
+
 const PORT = 3000;
 
 app.listen(PORT, () => {

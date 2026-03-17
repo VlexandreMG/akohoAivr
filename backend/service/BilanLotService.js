@@ -1,6 +1,9 @@
 // services/BilanLotService.js
 const AkohoMatyService = require('./AkohoMatyService');
 const LotRepository = require('../repositories/LotRepository');
+const EquivalenceService = require('./EquivalenceService');
+const PrixVenteService = require('./PrixVenteService');
+const EtatAtodyService = require('./EtatAtodyService');
 // Ajouter les autres services au fur et à mesure
 
 class BilanLotService {

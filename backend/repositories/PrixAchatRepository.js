@@ -13,14 +13,13 @@ class PrixAchatRepository {
 
     async findAll() {
         const result = await db.executeQuery(
-            `SELECT pa.id,
+                `SELECT pa.id,
                     pa.id_race,
                     pa.prix_akoho_unitaire,
                     pa.prix_atody_unitaire,
-                    r.nom AS race_nom,
-                    r.description AS race_description
-             FROM prix_achat pa
-             INNER JOIN race r ON pa.id_race = r.id`
+                    r.nom AS race_nom
+                 FROM prix_achat pa
+                 INNER JOIN race r ON pa.id_race = r.id`
         );
         return result.recordset;
     }
@@ -31,8 +30,7 @@ class PrixAchatRepository {
                     pa.id_race,
                     pa.prix_akoho_unitaire,
                     pa.prix_atody_unitaire,
-                    r.nom AS race_nom,
-                    r.description AS race_description
+                    r.nom AS race_nom
              FROM prix_achat pa
              INNER JOIN race r ON pa.id_race = r.id
              WHERE pa.id = @id`,
