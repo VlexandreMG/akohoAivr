@@ -108,6 +108,43 @@ class EquivalenceService {
         // Sinon → premier poids connu ou 0
         return equivalences[0]?.poids || 0;
     }
+
+    async getCoutSakafoEstime(lotId, date) {
+        // 1. Poids moyen estimé (en grammes)
+        const poidsMoyenGr = await this.getPoidsMoyenEstime(lotId, date);
+        if (poidsMoyenGr <= 0) return 0;
+
+        const poidsMoyenKg = poidsMoyenGr / 1000;
+
+        // 2. Nombre de poulets vivants
+        const AkohoMatyService = require('./AkohoMatyService');
+        const nbVivants = await AkohoMatyService.getNombrePouletsVivants(lotId, date);
+
+        // 3. Trouver le prixSakafo de la semaine actuelle
+        const lot = await LotRepository.findById(lotId);
+        if (!lot) throw new Error(`Lot ${lotId} non trouvé`);
+
+        const dateDebut = new Date(lot.daty);
+        const dateRef = new Date(date);
+        const jours = Math.floor((dateRef - dateDebut) / 86400000);
+        const semaines = Math.floor(jours / 7) + (lot.semaine_initial || 0);
+
+        const equivalences = await EquivalenceRepository.findByRaceId(lot.id_race);
+        equivalences.sort((a, b) => a.numero_semaine - b.numero_semaine);
+
+        const equiv = equivalences.find(e => e.numero_semaine === semaines) ||
+            equivalences.reduce((prev, curr) =>
+                curr.numero_semaine <= semaines && (!prev || curr.numero_semaine > prev.numero_semaine) ? curr : prev
+                , null);
+
+        if (!equiv || !equiv.prixSakafo) return 0;
+
+        const prixParKg = equiv.prixSakafo;   // ← ici on suppose que c'est par kg
+
+        const coutTotal = nbVivants * poidsMoyenKg * prixParKg;
+
+        return Math.round(coutTotal);
+    }
 }
 
 module.exports = new EquivalenceService();

@@ -14,6 +14,7 @@ Puis , on appelle cette fonction dans BilanLotService.
 7 - Poids moyen : Je vais te montrer un exemple de ce qu'il faut faire . Par exemple , la date donnée , c'est 12/03/26 , c'est à dire le 12 ème jour du mois de Mars , c'est à dire dans la 2ème semaine , sachant que la première semaine , le poulet a pris 400g , dans la deuxième semaine , la semaine concerné , il y a un règle de trois , si 7 jours est égale à 250g alors 5 jours donne (5 * 250)/7. Alors , le poids moyen est 400 + le resultat du règle de trois.
 
 8 - Sakafo : L'argent dépensé à cause de l'alimentation du lot. On prend le poids moyen par rapport à la date donnée et on le multiplie avec le prixSakafo.
+**Cumulé sa tsia le sakafo**
 
 9 - Prix de vente : Le poids moyen multiplié par le nombre de poulets dans le tableau multiplié par prix_akoho_g.
 
