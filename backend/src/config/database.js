@@ -5,10 +5,10 @@ const sql = require("mssql");
 let pool = null;
 
 const config = {
-    user: "node_user",
-    password: "MotDePasse123!",
-    server: "localhost",
-    database: "akoho_lol",
+    user: "akoho",
+    password: "@koho?2026",
+    server: "127.0.0.1",
+    database: "akoho",
     options: { trustServerCertificate: true }
 };
 

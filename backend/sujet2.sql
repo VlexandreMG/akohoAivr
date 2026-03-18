@@ -1,3 +1,4 @@
+-- Active: 1772846088208@@127.0.0.1@1433@akoho
 CREATE DATABASE akoho_lol;
 GO
 
@@ -25,8 +26,7 @@ CREATE TABLE lot (
     daty DATE NOT NULL,
     origine VARCHAR(20) NOT NULL CHECK (origine IN ('atody', 'akoho')) default 'akoho',
     semaine_initial INT NOT NULL CHECK (semaine_initial >= 0) DEFAULT 0,
-    prix_achat DECIMAL(10, 2) NOT NULL DEFAULT 0 CHECK (prix_achat >= 0),
-    FOREIGN KEY (id_race) REFERENCES race (id) ON DELETE CASCADE
+    prix_achat DECIMAL(10, 2) NOT NULL DEFAULT 0 CHECK (prix_achat >= 0)
 );
 GO
 
@@ -35,8 +35,7 @@ CREATE TABLE equivalence (
     numero_semaine INT NOT NULL,
     id_race INT NOT NULL,
     poids DECIMAL(10, 2) NOT NULL,
-    sakafo DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_race) REFERENCES race (id) ON DELETE CASCADE
+    sakafo DECIMAL(10, 2) NOT NULL
 );
 GO
 
@@ -45,8 +44,7 @@ CREATE TABLE akohoMaty (
     id_lot INT NOT NULL,
     nombre INT NOT NULL CHECK (nombre > 0),
     date DATE NOT NULL,
-    cause VARCHAR(255) NULL,
-    FOREIGN KEY (id_lot) REFERENCES lot (id) ON DELETE CASCADE
+    cause VARCHAR(255) NULL
 );
 GO
 
@@ -54,8 +52,7 @@ CREATE TABLE atody (
     id INT IDENTITY(1, 1) PRIMARY KEY,
     id_lot INT NOT NULL,
     nombre INT NOT NULL CHECK (nombre >= 0),
-    date DATE NOT NULL,
-    FOREIGN KEY (id_lot) REFERENCES lot (id) ON DELETE CASCADE
+    date DATE NOT NULL
 );
 GO
 
@@ -66,8 +63,7 @@ CREATE TABLE etatAtody (
         type IN ('fohy', 'simba')
     ),
     nombre INT NOT NULL CHECK (nombre >= 0),
-    date DATE NOT NULL,
-    FOREIGN KEY (id_lot) REFERENCES lot (id) ON DELETE CASCADE
+    date DATE NOT NULL
 );
 GO
 
@@ -75,8 +71,7 @@ CREATE TABLE prix_vente (
     id INT IDENTITY(1, 1) PRIMARY KEY,
     id_race INT NOT NULL,
     prix_akoho_g DECIMAL(10, 2) NOT NULL CHECK (prix_akoho_g >= 0),
-    prix_atody_unitaire DECIMAL(10, 2) NOT NULL CHECK (prix_atody_unitaire >= 0),
-    FOREIGN KEY (id_race) REFERENCES race (id) ON DELETE CASCADE
+    prix_atody_unitaire DECIMAL(10, 2) NOT NULL CHECK (prix_atody_unitaire >= 0)
 );
 GO
 
@@ -85,8 +80,7 @@ CREATE TABLE prix_achat (
     id_race INT NOT NULL,
     semaine_initial INT NOT NULL CHECK (semaine_initial >= 0) DEFAULT 0,
     prix_akoho_unitaire DECIMAL(10, 2) NOT NULL CHECK (prix_akoho_unitaire >= 0),
-    prix_atody_unitaire DECIMAL(10, 2) NOT NULL CHECK (prix_atody_unitaire >= 0),
-    FOREIGN KEY (id_race) REFERENCES race (id) ON DELETE CASCADE
+    prix_atody_unitaire DECIMAL(10, 2) NOT NULL CHECK (prix_atody_unitaire >= 0)
 );
 GO
 
