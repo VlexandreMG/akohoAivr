@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test POST EtatAtody</title>
+</head>
+<body>
+  <h1>Test POST /api/etatAtodys/create-etat-atody</h1>
+  <form id="etatAtodyForm">
+    <label>id_lot: <input type="number" name="id_lot" value="3" required></label><br>
+    <label>type: <input type="text" name="type" value="fohy" required></label><br>
+    <label>nombre: <input type="number" name="nombre" value="1" required></label><br>
+    <label>date: <input type="date" name="date" value="2026-03-15" required></label><br>
+    <button type="submit">Envoyer</button>
+  </form>
+  <pre id="result"></pre>
+  <script>
+    document.getElementById('etatAtodyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        id_lot: form.id_lot.value,
+        type: form.type.value,
+        nombre: form.nombre.value,
+        date: form.date.value
+      };
+      const res = await fetch('http://localhost:3000/api/etatAtodys/create-etat-atody', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+    });
+  </script>
+</body>
+</html>

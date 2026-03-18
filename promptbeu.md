@@ -23,3 +23,8 @@ Puis , on appelle cette fonction dans BilanLotService.
 11 - Valeur de atody  : Le nombre atody * prix_atody unitaire dans prix_vente.
 
 12 - Benefice : (Prix de vente + valeur atody) - (Prix achat + sakafo). 
+
+
+-------------DEBUG-------------------
+
+1 - NombresPouletVivants : 

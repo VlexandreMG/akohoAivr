@@ -6,13 +6,9 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "frontend": {
+    "akoho_huhu": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -22,7 +18,6 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -30,7 +25,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.css"
             ]
           },
           "configurations": {
@@ -61,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "frontend:build:production"
+              "buildTarget": "akoho_huhu:build:production"
             },
             "development": {
-              "buildTarget": "frontend:build:development"
+              "buildTarget": "akoho_huhu:build:development"
             }
           },
           "defaultConfiguration": "development"
